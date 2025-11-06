@@ -1,0 +1,10 @@
+*.pt
+*.parquet
+*.zip
+*.pdf
+.ipynb_checkpoints
+__pycache__
+crowd.mp4
+microcrowd.mp4
+result.mp4
+old

@@ -1,0 +1,8 @@
+ultralytics>=8.3.197
+sahi>=0.11.36
+
+opencv-python>=4.10.0
+
+torch>=2.0.0+cu121
+torchvision>=0.15.0+cu121
+--extra-index-url https://download.pytorch.org/whl/cu121
