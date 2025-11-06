@@ -27,7 +27,6 @@ class YoloDetector:
                 По умолчанию "cpu".
         """
         self.model_path = model_path
-        self.name = model_path.replace('.pt', '')
         self.preprocessing_func = preprocessing_func
         self.device = device
 
@@ -121,7 +120,6 @@ class YoloSahiDetector:
                 По умолчанию "cuda".
         """
         self.model_path = model_path
-        self.name = model_path.replace('.pt', '')
         self.slice_height = slice_height
         self.slice_width = slice_width
         self.overlap_height_ratio = overlap_height_ratio
@@ -300,7 +298,6 @@ class RTDETRSahiDetector:
                 По умолчанию "cpu".
         """
         self.model_path = model_path
-        self.name = model_path.replace('.pt', '')
         self.slice_height = slice_height
         self.slice_width = slice_width
         self.overlap_height_ratio = overlap_height_ratio
