@@ -4,11 +4,12 @@
 
 ## Описание
 
-Этот проект предоставляет инструменты для детекции людей на видео с использованием современных моделей YOLO. Проект поддерживает три режима работы:
+Этот проект предоставляет инструмент для детекции людей на видео с использованием современных моделей CV. Проект поддерживает четыре режима работы:
 
 - **Чистый YOLO**: Стандартная детекция
 - **YOLO + SAHI**: Улучшенная детекция с разбиением изображения на перекрывающиеся фрагменты для лучшего обнаружения мелких объектов
 - **RT-DETR**: Детекция на оснвое Vision Transformer
+- **RT-DETR + SAHI**: Детекция на оснвое Vision Transformer с разбиением изображения на перекрывающиеся фрагменты
 
 ## 🛠️ Установка
 
@@ -82,7 +83,7 @@ python main.py --input video.mp4 --output result.mp4 --confidence 0.5
 ```
 yolo-person-detection/
 ├── main.py                 # Главный скрипт для обработки видео
-├── detectors.py        	# Классы детекторов (YOLO, YOLO+SAHI, RT-DETR)
+├── detectors.py        	# Классы детекторов (YOLO, YOLO+SAHI, RT-DETR, RT-DETR+SAHI)
 ├── preprocessors.py        # Функции предобработки изображений
 ├── video_writers.py        # Функции создания видео
 ├── requirements.txt        # Зависимости проекта
@@ -119,6 +120,43 @@ from preprocessors import apply_clahe
 
 detector = YoloSahiDetector(
     model_path='yolo12n.pt',
+    slice_height=512,
+    slice_width=512,
+    overlap_height_ratio=0.2,
+    overlap_width_ratio=0.2,
+    preprocessing_func=apply_clahe,
+    device='cuda'
+)
+
+detections = detector.detect(frame)
+```
+
+#### RTDETRDetector
+
+Стандартный детектор RT-DETR:
+
+```python
+from detectors import RTDETRDetector
+
+detector = RTDETRDetector(
+    model_path='rtdetr-l.pt',
+    preprocessing_func=None,
+    device='cuda'
+)
+
+detections = detector.detect(frame)
+```
+
+#### TDETRSahiDetector
+
+Детектор RT-DETR с использованием SAHI для улучшенной детекции мелких объектов:
+
+```python
+from detectors import RTDETRSahiDetector
+from preprocessors import apply_clahe
+
+detector = RTDETRSahiDetector(
+    model_path='rtdetr-l.pt',
     slice_height=512,
     slice_width=512,
     overlap_height_ratio=0.2,
@@ -228,5 +266,5 @@ https://docs.ultralytics.com/models/
 - **Архитектурный эксперимент.** Тестирование альтернативных моделей детекции, потенциально лучше работающих с мелкими объектами.
 
 ## Результат рабы программы
-**Пример работы модели** с построением bounding boxes:
+**Пример работы модели** с построением bounding boxes(RT-DETR + SAHI, model_name = `rtdetr-x.pt`, slice_height=800, slice_width=800,overlap_height_ratio=0.3, overlap_width_ratio=0.3):
 https://disk.yandex.ru/i/f09QCtc4iiJEWg
