@@ -77,6 +77,43 @@ python main.py --input input_video.mp4 --output output_video.mp4
 python main.py --input video.mp4 --output result.mp4 --confidence 0.5
 ```
 
+#### Сравнение нескольких моделей на одном видео
+
+Проект поддерживает одновременную визуализацию результатов работы **нескольких моделей** на одном видео. Каждая модель отображается своим цветом, что позволяет визуально сравнивать их производительность.
+
+Для использования этой функции раскомментируйте соответствующий блок кода в `main.py`:
+
+```python
+# Инициализация нескольких моделей
+model1 = detectors.YoloDetector(
+    'yolo12l.pt',
+    device=device
+)
+
+model2 = detectors.YoloSahiDetector(
+    'yolo12n.pt',
+    slice_height=800,
+    slice_width=800,
+    overlap_height_ratio=0.3,
+    overlap_width_ratio=0.3,
+    preprocessing_func=apply_clahe,
+    device=device
+)
+
+model3 = detectors.RTDETRDetector(
+    model_path="rtdetr-l.pt",
+    preprocessing_func=apply_clahe,
+    device=device
+)
+
+# Обработка видео с визуализацией всех моделей
+video_writers.draw_multi_detections(
+    input_path,
+    output_path,
+    [model1, model2, model3],
+    confidence
+)
+```
 
 ## 📁 Структура проекта
 
